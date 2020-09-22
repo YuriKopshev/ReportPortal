@@ -2,7 +2,7 @@ package ru.netology;
 
 import com.github.javafaker.Faker;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,33 +14,21 @@ public class DataGenerator {
     private DataGenerator() {}
 
 
+    public static String getDate(int shift) {
+        return LocalDate.now().plusDays(shift).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+    public static String getCity(){
+        Random random = new Random();
+        String[] city = new String[]{"Москва", "Казань", "Калининград"};
+        return city[random.nextInt(city.length)];
+    }
     @Data
-    public static class ClientCardInfo {
-        private String city;
-        private String name;
-        private String telNumber;
-
-       public ClientCardInfo(String city, String name, String telNumber) {
-           this.city = city;
-           this.name = name;
-           this.telNumber = telNumber;
-       }
-
-       public static ClientCardInfo generateUser() {
-           String[]city = new String[]{"Москва","Казань","Калининград"};
-           Random random = new Random();
-           String randomCity = city[random.nextInt(city.length)];
-               Faker faker = new Faker(new Locale("ru"));
-               return new ClientCardInfo(randomCity,
-                       faker.name().firstName()+" "+faker.name().lastName(),
-                       faker.phoneNumber().phoneNumber());
-           }
-
-           public static String dateGenerator(){
-               String date = LocalDate.now().plusDays(3).
-                       format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-               return date;
-           }
-
+    public static class ClientGenerator {
+        public static ClientCardInfo generateUser() {
+            Faker faker = new Faker(new Locale("ru"));
+            return new ClientCardInfo(getCity(),
+                    faker.name().firstName() + " " + faker.name().lastName(),
+                    faker.phoneNumber().phoneNumber());
+        }
     }
 }
