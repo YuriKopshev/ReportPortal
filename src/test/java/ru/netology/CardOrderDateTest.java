@@ -17,15 +17,16 @@ import static ru.netology.DataGenerator.getDate;
 
 public class CardOrderDateTest {
 
-    String date = getDate(3);
-    String rescheduleDate = getDate(4);
+    String date = getDate(4);
+    String rescheduleDate = getDate(5);
     ClientCardInfo info = generateUser();
 
     //Этот тест проверяет первичный заказ доставки, дата не занята
     @Test
     void shouldCardOrderDeliveryTestSuccessesDate() {
         open("http://localhost:9999");
-        $("[type='text']").setValue(getCity());
+        $("[type='text']").setValue(info.getCity());
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(date);
         $("[data-test-id= name] input.input__control ").setValue(info.getName());
         $("[data-test-id= phone] input.input__control ").setValue(info.getTelNumber());
@@ -39,26 +40,29 @@ public class CardOrderDateTest {
     @Test
     void shouldCardOrderDeliveryTestRescheduleDate() {
         open("http://localhost:9999");
-        $("[type='text']").setValue(getCity());
+        $("[type='text']").setValue(info.getCity());
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(date);
         $("[data-test-id= name] input.input__control ").setValue(info.getName());
         $("[data-test-id= phone] input.input__control ").setValue(info.getTelNumber());
         $("[data-test-id='agreement']").click();
         $$("[type='button']").find(exactText("Запланировать")).click();
         $(withText("Успешно!")).waitUntil(visible, 5000);
+        $("[data-test-id=success-notification] .notification__content ").waitUntil(visible, 5000).shouldHave(text(date));
         $$("[type='button']").find(exactText("Запланировать")).click();
         $$("[type='button']").find(exactText("Перепланировать")).click();
         $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(rescheduleDate);
         $(withText("Успешно!")).waitUntil(visible, 5000);
-        $("[data-test-id=success-notification] .notification__content ").waitUntil(visible, 10000).shouldHave(text(rescheduleDate));
+        $("[data-test-id=success-notification] .notification__content ").waitUntil(visible, 5000).shouldHave(text(rescheduleDate));
     }
 
     //Этот тест негативный на проверку невалидного номера
     @Test
     void shouldCardOrderDeliveryTestWrongPhoneNumber() {
         open("http://localhost:9999");
-        $("[type='text']").setValue(getCity());
+        $("[type='text']").setValue(info.getCity());
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(date);
         $("[data-test-id= name] input.input__control ").setValue(info.getName());
         $("[data-test-id= phone] input.input__control ").setValue("+700");
@@ -73,6 +77,7 @@ public class CardOrderDateTest {
     void shouldCardOrderDeliveryTestWrongCity() {
         open("http://localhost:9999");
         $("[type='text']").setValue("Сочи");
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(date);
         $("[data-test-id= name] input.input__control ").setValue(info.getName());
         $("[data-test-id= phone] input.input__control ").setValue(info.getTelNumber());
@@ -85,7 +90,8 @@ public class CardOrderDateTest {
     @Test
     void shouldCardOrderDeliveryTestWrongName() {
         open("http://localhost:9999");
-        $("[type='text']").setValue(getCity());
+        $("[type='text']").setValue(info.getCity());
+        $("[data-test-id=date] input.input__control").doubleClick().sendKeys(Keys.BACK_SPACE);
         $("[data-test-id=date] input.input__control").setValue(date);
         $("[data-test-id= name] input.input__control ").setValue("-");
         $("[data-test-id= phone] input.input__control ").setValue(info.getTelNumber());
