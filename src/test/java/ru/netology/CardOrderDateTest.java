@@ -1,7 +1,12 @@
 package ru.netology;
 
 
+import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.logevents.SelenideLogger;
 import com.github.javafaker.Faker;
+import io.qameta.allure.selenide.AllureSelenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.Keys;
@@ -16,6 +21,15 @@ import static ru.netology.DataGenerator.getCity;
 import static ru.netology.DataGenerator.getDate;
 
 public class CardOrderDateTest {
+    @BeforeAll
+    static void setUpAll(){
+        SelenideLogger.addListener("allure",new AllureSelenide());
+    }
+
+    @AfterAll
+    static void tearDownAll(){
+    SelenideLogger.removeListener("allure");
+    }
 
     String date = getDate(4);
     String rescheduleDate = getDate(5);
