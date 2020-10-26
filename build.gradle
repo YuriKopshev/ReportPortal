@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'io.qameta.allure' version '2.8.1'
 }
 
 group 'ru.netology'
@@ -10,37 +9,36 @@ sourceCompatibility = 11;
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
 
-allure {
-    autoconfigure = true
-    version = '2.13.6' // Latest Allure Version
-    useJUnit5 {
-        version = '2.13.6' // Latest Allure Version
-    }
-}
+
 
 repositories {
-    jcenter()
     mavenLocal()
     mavenCentral()
+    jcenter()
     maven { url "http://dl.bintray.com/epam/reportportal" }
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
     testImplementation 'com.codeborne:selenide:5.14.2'
-    testImplementation 'com.github.javafaker:javafaker:1.0.1'
-    testImplementation 'io.qameta.allure:allure-selenide:2.13.6'
-
     compileOnly 'org.projectlombok:lombok:1.18.12'
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
-
     testCompileOnly 'org.projectlombok:lombok:1.18.12'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
-    testCompile 'com.epam.reportportal:agent-java-junit5:5.0.2'
-    compile 'com.epam.reportportal:logger-java-log4j:5.0.3'
-    compile 'org.apache.logging.log4j:log4j-api:2.11.2'
-    compile 'org.apache.logging.log4j:log4j-core:2.11.2'
-    compile 'com.epam.reportportal:agent-java-junit5:5.0.2'
+
+
+    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'com.epam.reportportal:agent-java-junit5:5.0.0'
+    implementation 'com.epam.reportportal:logger-java-logback:5.0.2'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'com.epam.reportportal:logger-java-log4j:5.0.2'
+    compileOnly 'log4j:log4j:1.2.17'
+    implementation 'org.apache.logging.log4j:log4j-api:2.13.3'
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+
+
+
+
 
 }
 
@@ -49,4 +47,7 @@ test {
     testLogging.showStandardStreams = true
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', true
     systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    testLogging.showStandardStreams = true
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', true
 }
